@@ -17,25 +17,33 @@ function LoginForm({errors, touched, status}) {
   return (
     <>
       <Form className="form">
-        {touched.name && errors.name && <p>{errors.name}</p>}
+        {touched.name && errors.name && <p className="error-message">{errors.name}</p>}
         <Field 
           type='text'
           placeholder='Name'
           name='name'
         />
-        {touched.email && errors.email && <p>{errors.email}</p>}
+        {touched.email && errors.email && <p className="error-message">{errors.email}</p>}
         <Field 
           type='text'
           placeholder='Email'
           name='email'
         />
-        {touched.password && errors.password && <p>{errors.password}</p>}
+        {touched.password && errors.password && <p className="error-message">{errors.password}</p>}
         <Field 
           type='password'
           placeholder='Password'
           name='password'
         />
-        {touched.terms && errors.terms && <p>{errors.terms}</p>}
+        {touched.role && errors.role && <p className="error-message">{errors.role}</p>}
+        <Field component="select" name="role">
+          <option value="" disabled>Select Your Role</option>
+          <option value="UX Designer">UX Designer</option>
+          <option value="UI Designer">UI Designer</option>
+          <option value="Front End Engineer">Front End Engineer</option>
+          <option value="Back End Engineer">Back End Engineer</option>
+        </Field>
+        {touched.terms && errors.terms && <p className="error-message">{errors.terms}</p>}
         <label style={{fontSize: '12px', color: 'white'}}>Agree
           <Field 
             type='checkbox'
@@ -43,18 +51,17 @@ function LoginForm({errors, touched, status}) {
           />
         </label>
         <button type="submit">Submit</button>
-      
-        <div>
-          <h2>These Users have already signed up:</h2>
-          {users.map((user, index) => {
-            return(
-              <div key={index}>
-                <h3>Username: {user.name}</h3>
-              </div>
-            )
-          })}
-        </div>
 
+        <p style={{fontSize: '20px', textAlign: 'center', color: 'white'}}>Current Users:</p>
+      
+        {users.map((user, index) => {
+          return(
+            <div key={index}>
+              <h3>{user.name}</h3>
+              <h4>{user.role}</h4>
+            </div>
+          )
+        })}
       </Form>
 
     </>
@@ -62,11 +69,12 @@ function LoginForm({errors, touched, status}) {
 }
 
 const FormikLoginForm = withFormik({
-  mapPropsToValues({ name, email, password, terms }) {
+  mapPropsToValues({ name, email, password, role, terms }) {
     return {
       name: name || '',
       email: email || '',
       password: password || '',
+      role: role || '',
       terms: terms || false
     }
   },
@@ -75,6 +83,7 @@ const FormikLoginForm = withFormik({
     name: yup.string().required('You must enter a name.'),
     email: yup.string().required('Your email address is required.'),
     password: yup.string().min(6).required('We definitely are gonna need a valid password ;)'),
+    role: yup.string().required(`If you don't know your role, how are we supposed to know?`),
     terms: yup.boolean().oneOf([true], `Well, it seems you haven't accepted our terms of service... That's not gonna work for us fam.`)
   }),
 

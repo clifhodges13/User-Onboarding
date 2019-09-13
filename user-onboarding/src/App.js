@@ -10,11 +10,13 @@ export default function App() {
     padding: 0;
     margin: 0;
     width: 1100px;
-    height: auto;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom right, lightgreen, turquoise);
+    background: url('https://images.pexels.com/photos/325521/pexels-photo-325521.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-position: bottom;
   `
 
   return (
